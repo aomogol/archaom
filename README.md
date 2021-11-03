@@ -1,3 +1,5 @@
+Arch Linux kurulumu için pratik ve Türkçe script...
+
 # ArchTitus Installer Script
 
 
