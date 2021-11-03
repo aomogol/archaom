@@ -1,26 +1,27 @@
 Arch Linux kurulumu için pratik ve Türkçe script...
 
-# ArchTitus Installer Script
+# Arch Linux Kurulum Scripti
 
+Bu çalışma Arch Linux kurulumunu, KDE Plasma masaüstü ortamını, tüm destek paketlerini (ağ, bluetooth, ses, yazıcılar, vb.), tercih ettiğimiz tüm uygulama ve yardımcı programları içeren kurulumları yapar. Burada ki komut dosyaları, tüm sürecin otomatikleştirilmesine izin verir.
 
-
-This README contains the steps I do to install and configure a fully-functional Arch Linux installation containing a desktop environment, all the support packages (network, bluetooth, audio, printers, etc.), along with all my preferred applications and utilities. The shell scripts in this repo allow the entire process to be automated.)
 
 ---
-## Create Arch ISO or Use Image
+## Arch ISO edinme 
 
-Download ArchISO from <https://archlinux.org/download/> and put on a USB drive with Ventoy or Etcher
+ArchISO dosyasını <https://archlinux.org/download/> adresinden indirebilirsiniz. 
+ISO dosyasını bir USB sürücüye Ventoy veya Etcher gibi bir tool ile aktarın.
 
-If you don't want to build using this script I did create an image @ <https://www.christitus.com/arch-titus>
 
-## Boot Arch ISO
+## Arch ISO ile boot 
 
-From initial Prompt type the following commands:
-
+Boot işlemi ile gelen ilk prompt ekranında aşağıdaki komutları çalıştırın:
+(Türkçe klavye desteği için 
+    loadkeys trq    
+                            komutunu çalıştırın)
 ```
 pacman -Sy git
-git clone https://github.com/ChrisTitusTech/ArchTitus
-cd ArchTitus
+git clone https://github.com/aomogol/archaom
+cd archaom
 ./archtitus.sh
 ```
 
