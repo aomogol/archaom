@@ -12,18 +12,17 @@ pacman -S --noconfirm pacman-contrib
 # pacman -S --noconfirm terminus-font
 #setfont ter-v22b
 sed -i 's/^#Para/Para/' /etc/pacman.conf
+sed -i 's/^#Color/Color/' /etc/pacman.conf
 pacman -S --noconfirm reflector rsync grub
-mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.yedek
 echo -e "-------------------------------------------------------------------------"
-
 echo -e "-------------------------------------------------------------------------"
 echo -e "- $iso için en hızlı indirme noktalarının ayarlanması.                   "
 echo -e "-------------------------------------------------------------------------"
-
+echo -e "-------------------------------------------------------------------------"
 reflector -a 48 -c $iso -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 mkdir /mnt
-
-
+echo -e "-------------------------------------------------------------------------"
 echo -e "\n Gerekli paketlerin yüklenmesi...\n$HR"
 pacman -S --noconfirm gptfdisk btrfs-progs
 
@@ -92,9 +91,9 @@ if ! grep -qs '/mnt' /proc/mounts; then
     reboot now
 fi
 
-echo "--------------------------------------"
-echo "-- Ana bölüme Arch kuruluyor        --"
-echo "--------------------------------------"
+echo "--------------------------------------------"
+echo "-- Ana bölüme Arch Linux kuruluyor        --"
+echo "--------------------------------------------"
 pacstrap /mnt base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt --noconfirm --needed
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "keyserver hkp://keyserver.ubuntu.com" >> /mnt/etc/pacman.d/gnupg/gpg.conf

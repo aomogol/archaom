@@ -12,7 +12,7 @@ echo "Optimum indirme performansı için Mirrorlist düzenlemesi        "
 echo "---------------------------------------------------------------"
 pacman -S --noconfirm pacman-contrib curl
 pacman -S --noconfirm reflector rsync
-cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.yedek
 
 nc=$(grep -c ^processor /proc/cpuinfo)
 echo "Sisteminizde " $nc" core var."
@@ -27,7 +27,7 @@ fi
 echo "-------------------------------------------------------"
 echo "       Dil ayarları (TR) ve Lokalizasyon ayarları   "
 echo "-------------------------------------------------------"
-#sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 sed -i 's/^#tr_TR.UTF-8 UTF-8/tr_TR.UTF-8 UTF-8/' /etc/locale.gen
 sed -i 's/^#tr_TR ISO-8859-9/tr_TR ISO-8859-9/' /etc/locale.gen
 
@@ -100,7 +100,7 @@ PKGS=(
 'fuse2'
 'fuse3'
 'fuseiso'
-'gamemode'
+# 'gamemode'
 'gcc'
 # 'gimp' # Photo editing
 'git'
@@ -152,6 +152,7 @@ PKGS=(
 'oxygen'
 'p7zip'
 'pacman-contrib'
+'partitionmanager'
 'patch'
 'picom'
 'pkgconf'
@@ -172,10 +173,10 @@ PKGS=(
 'sddm-kcm'
 'snapper'
 'spectacle'
-'steam'
+# 'steam'
 'sudo'
 'swtpm'
-'synergy'
+# 'synergy'
 'systemsettings'
 'terminus-font'
 'traceroute'
