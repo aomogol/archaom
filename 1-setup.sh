@@ -12,46 +12,51 @@ echo "--          Network Setup           --"
 echo "--------------------------------------"
 pacman -S networkmanager dhclient --noconfirm --needed
 systemctl enable --now NetworkManager
-echo "-------------------------------------------------"
-echo "Setting up mirrors for optimal download          "
-echo "-------------------------------------------------"
+echo "---------------------------------------------------------------"
+echo "Optimum indirme performansı için Mirrorlist düzenlemesi        "
+echo "---------------------------------------------------------------"
 pacman -S --noconfirm pacman-contrib curl
 pacman -S --noconfirm reflector rsync
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 
 nc=$(grep -c ^processor /proc/cpuinfo)
-echo "You have " $nc" cores."
+echo "Sisteminizde " $nc" core var."
 echo "-------------------------------------------------"
-echo "Changing the makeflags for "$nc" cores."
+echo "makeflags "$nc" core için düzenleniyor."
 TOTALMEM=$(cat /proc/meminfo | grep -i 'memtotal' | grep -o '[[:digit:]]*')
 if [[  $TOTALMEM -gt 8000000 ]]; then
 sudo sed -i 's/#MAKEFLAGS="-j2"/MAKEFLAGS="-j$nc"/g' /etc/makepkg.conf
-echo "Changing the compression settings for "$nc" cores."
+echo " Sıkıştırma ayarları "$nc" core için ayarlanıyor."
 sudo sed -i 's/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g' /etc/makepkg.conf
 fi
-echo "-------------------------------------------------"
-echo "       Setup Language to US and set locale       "
-echo "-------------------------------------------------"
-sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
-locale-gen
-timedatectl --no-ask-password set-timezone America/Chicago
-timedatectl --no-ask-password set-ntp 1
-localectl --no-ask-password set-locale LANG="en_US.UTF-8" LC_TIME="en_US.UTF-8"
+echo "-------------------------------------------------------"
+echo "       Dil ayarları (TR) ve Lokalizasyon ayarları   "
+echo "-------------------------------------------------------"
+#sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+sed -i 's/^#tr_TR.UTF-8 UTF-8/tr_TR.UTF-8 UTF-8/' /etc/locale.gen
+sed -i 's/^#tr_TR ISO-8859-9/tr_TR ISO-8859-9/' /etc/locale.gen
 
-# Set keymaps
-localectl --no-ask-password set-keymap us
+locale-gen
+timedatectl --no-ask-password set-timezone Europe/Istanbul
+timedatectl --no-ask-password set-ntp 1
+localectl --no-ask-password set-locale LANG="tr_TR.UTF-8" 
+#LC_TIME="tr_TR.UTF-8"
+
+# keymaps tanımı
+localectl --no-ask-password set-keymap trq
 
 # Add sudo no password rights
 sed -i 's/^# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
 
-#Add parallel downloading
+# parallel download ve renkler
 sed -i 's/^#Para/Para/' /etc/pacman.conf
+sed -i 's/^#Color/Color/' /etc/pacman.conf
 
 #Enable multilib
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Sy --noconfirm
 
-echo -e "\nInstalling Base System\n"
+echo -e "\n Temel sistem uygulamalarının kurulumu \n"
 
 PKGS=(
 'mesa' # Essential Xorg First
@@ -82,9 +87,9 @@ PKGS=(
 'breeze-gtk'
 'bridge-utils'
 'btrfs-progs'
-'celluloid' # video players
-'cmatrix'
-'code' # Visual Studio code
+# 'celluloid' # video players
+# 'cmatrix'
+# 'code' # Visual Studio code
 'cronie'
 'cups'
 'dialog'
@@ -103,7 +108,7 @@ PKGS=(
 'fuseiso'
 'gamemode'
 'gcc'
-'gimp' # Photo editing
+# 'gimp' # Photo editing
 'git'
 'gparted' # partition management
 'gptfdisk'
@@ -116,7 +121,7 @@ PKGS=(
 'haveged'
 'htop'
 'iptables-nft'
-'jdk-openjdk' # Java 17
+# 'jdk-openjdk' # Java 17
 'kate'
 'kcodecs'
 'kcoreaddons'
@@ -136,7 +141,7 @@ PKGS=(
 'linux-firmware'
 'linux-headers'
 'lsof'
-'lutris'
+# 'lutris'
 'lzop'
 'm4'
 'make'
@@ -167,7 +172,7 @@ PKGS=(
 'python-psutil'
 'python-pyqt5'
 'python-pip'
-'qemu'
+# 'qemu'
 'rsync'
 'sddm'
 'sddm-kcm'
@@ -185,13 +190,13 @@ PKGS=(
 'unzip'
 'usbutils'
 'vim'
-'virt-manager'
-'virt-viewer'
+# 'virt-manager'
+# 'virt-viewer'
 'wget'
 'which'
-'wine-gecko'
-'wine-mono'
-'winetricks'
+# 'wine-gecko'
+# 'wine-mono'
+# 'winetricks'
 'xdg-desktop-portal-kde'
 'xdg-user-dirs'
 'zeroconf-ioslave'
@@ -212,12 +217,12 @@ done
 proc_type=$(lscpu | awk '/Vendor ID:/ {print $3}')
 case "$proc_type" in
 	GenuineIntel)
-		print "Installing Intel microcode"
+		print "Intel microcode kuruluyor"
 		pacman -S --noconfirm intel-ucode
 		proc_ucode=intel-ucode.img
 		;;
 	AuthenticAMD)
-		print "Installing AMD microcode"
+		print "AMD microcode kuruluyor"
 		pacman -S --noconfirm amd-ucode
 		proc_ucode=amd-ucode.img
 		;;
@@ -233,20 +238,20 @@ elif lspci | grep -E "Integrated Graphics Controller"; then
     pacman -S libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils --needed --noconfirm
 fi
 
-echo -e "\nDone!\n"
+echo -e "\nTamamlandı!\n"
 if ! source install.conf; then
-	read -p "Please enter username:" username
+	read -p "Kullanıcı adı giriniz:" username
 echo "username=$username" >> ${HOME}/ArchTitus/install.conf
 fi
 if [ $(whoami) = "root"  ];
 then
     useradd -m -G wheel,libvirt -s /bin/bash $username 
 	passwd $username
-	cp -R /root/ArchTitus /home/$username/
-    chown -R $username: /home/$username/ArchTitus
-	read -p "Please name your machine:" nameofmachine
+	cp -R /root/archaom /home/$username/
+    chown -R $username: /home/$username/archaom
+	read -p "Makine adı giriniz:" nameofmachine
 	echo $nameofmachine > /etc/hostname
 else
-	echo "You are already a user proceed with aur installs"
+	echo "AUR paketlerinin yüklenmesi için sistem hazır"
 fi
 

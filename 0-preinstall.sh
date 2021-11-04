@@ -8,9 +8,9 @@
 #  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝   ╚═╝    ╚═════╝ ╚══════╝
 #-------------------------------------------------------------------------
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-echo "-------------------------------------------------"
-echo "Setting up mirrors for optimal download          "
-echo "-------------------------------------------------"
+echo "-------------------------------------------------------"
+echo "Optimum indirme performansı için Mirrorlist düzenlemesi"
+echo "-------------------------------------------------------"
 iso=$(curl -4 ifconfig.co/country-iso)
 timedatectl set-ntp true
 pacman -S --noconfirm pacman-contrib terminus-font
@@ -26,45 +26,46 @@ echo -e "  ██╔══██║██╔══██╗██║     ██�
 echo -e "  ██║  ██║██║  ██║╚██████╗██║  ██║   ██║   ██║   ██║   ╚██████╔╝███████║"
 echo -e "  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝   ╚═╝    ╚═════╝ ╚══════╝"
 echo -e "-------------------------------------------------------------------------"
-echo -e "-Setting up $iso mirrors for faster downloads"
+echo -e "- $iso için en hızlı indirme noktalarının ayarlanması.                   "
 echo -e "-------------------------------------------------------------------------"
 
 reflector -a 48 -c $iso -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 mkdir /mnt
 
 
-echo -e "\nInstalling prereqs...\n$HR"
+echo -e "\n Gerekli paketlerin yüklenmesi...\n$HR"
 pacman -S --noconfirm gptfdisk btrfs-progs
 
 echo "-------------------------------------------------"
-echo "-------select your disk to format----------------"
+echo "--- Yükleme yapılacak diskin formatlanması-------"
 echo "-------------------------------------------------"
 lsblk
-echo "Please enter disk to work on: (example /dev/sda)"
+echo "Yüklemenin yapılacağı disk : (örnek /dev/sda)"
 read DISK
-echo "THIS WILL FORMAT AND DELETE ALL DATA ON THE DISK"
-read -p "are you sure you want to continue (Y/N):" formatdisk
+echo "SEÇTİĞİNİZ DİSK FORMATLANACAK ve TÜM BİLGİLER SİLİNECEKTİR"
+echo "YEDEKLEME İŞLEMİNİZİ YAPTIĞINIZDAN EMİN OLUNUZ."
+read -p "devam etmek istediğinizden emin misiniz? (E/H Y/N):" formatdisk
 case $formatdisk in
 
-y|Y|yes|Yes|YES)
+y|Y|yes|Yes|YES|E|e|evet|Evet|EVET)
 echo "--------------------------------------"
-echo -e "\nFormatting disk...\n$HR"
+echo -e "\n Disk Formatlanıyor ...\n$HR"
 echo "--------------------------------------"
 
-# disk prep
-sgdisk -Z ${DISK} # zap all on disk
-sgdisk -a 2048 -o ${DISK} # new gpt disk 2048 alignment
+# disk hazırlıpı
+sgdisk -Z ${DISK} # tüm disk temizleniyor
+sgdisk -a 2048 -o ${DISK} # yeni GPT disk tanımlanıyor
 
-# create partitions
+# bölümleri yaratma
 sgdisk -n 1::+1M --typecode=1:ef02 --change-name=1:'BIOSBOOT' ${DISK} # partition 1 (BIOS Boot Partition)
-sgdisk -n 2::+100M --typecode=2:ef00 --change-name=2:'EFIBOOT' ${DISK} # partition 2 (UEFI Boot Partition)
-sgdisk -n 3::-0 --typecode=3:8300 --change-name=3:'ROOT' ${DISK} # partition 3 (Root), default start, remaining
+sgdisk -n 2::+200M --typecode=2:ef00 --change-name=2:'EFIBOOT' ${DISK} # partition 2 (UEFI Boot Partition)
+sgdisk -n 3::-0 --typecode=3:8300 --change-name=3:'ROOT' ${DISK} # partition 3 (Root), 
 if [[ ! -d "/sys/firmware/efi" ]]; then
     sgdisk -A 1:set:2 ${DISK}
 fi
 
-# make filesystems
-echo -e "\nCreating Filesystems...\n$HR"
+#Disk bölümleri yapılandırılıyor
+echo -e "\n Disk bölümleri yapılandırılıyor...\n$HR"
 if [[ ${DISK} =~ "nvme" ]]; then
 mkfs.vfat -F32 -n "EFIBOOT" "${DISK}p2"
 mkfs.btrfs -L "ROOT" "${DISK}p3" -f
@@ -79,9 +80,9 @@ btrfs subvolume create /mnt/@
 umount /mnt
 ;;
 *)
-echo "Rebooting in 3 Seconds ..." && sleep 1
-echo "Rebooting in 2 Seconds ..." && sleep 1
-echo "Rebooting in 1 Second ..." && sleep 1
+echo "Yeniden başlatılacak 3 ..." && sleep 1
+echo "Yeniden başlatılacak 2 ..." && sleep 1
+echo "Yeniden başlatılacak 1 ..." && sleep 1
 reboot now
 ;;
 esac
@@ -93,23 +94,23 @@ mkdir /mnt/boot/efi
 mount -t vfat -L EFIBOOT /mnt/boot/
 
 if ! grep -qs '/mnt' /proc/mounts; then
-    echo "Drive is not mounted can not continue"
-    echo "Rebooting in 3 Seconds ..." && sleep 1
-    echo "Rebooting in 2 Seconds ..." && sleep 1
-    echo "Rebooting in 1 Second ..." && sleep 1
+    echo "Sürücü mount edilemediği için devam edilemiyor"
+    echo "Yeniden başlatılacak 3 ..." && sleep 1
+    echo "Yeniden başlatılacak 2 ..." && sleep 1
+    echo "Yeniden başlatılacak 1  ..." && sleep 1
     reboot now
 fi
 
 echo "--------------------------------------"
-echo "-- Arch Install on Main Drive       --"
+echo "-- Ana bölüme Arch kuruluyor        --"
 echo "--------------------------------------"
 pacstrap /mnt base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt --noconfirm --needed
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "keyserver hkp://keyserver.ubuntu.com" >> /mnt/etc/pacman.d/gnupg/gpg.conf
-cp -R ${SCRIPT_DIR} /mnt/root/ArchTitus
+cp -R ${SCRIPT_DIR} /mnt/root/archaom
 cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
 echo "--------------------------------------"
-echo "-- Check for low memory systems <8G --"
+echo "-- Düşük sistem belleği kontrol <8G --"
 echo "--------------------------------------"
 TOTALMEM=$(cat /proc/meminfo | grep -i 'memtotal' | grep -o '[[:digit:]]*')
 if [[  $TOTALMEM -lt 8000000 ]]; then
@@ -124,6 +125,6 @@ if [[  $TOTALMEM -lt 8000000 ]]; then
     #The line below is written to /mnt/ but doesn't contain /mnt/, since it's just / for the sysytem itself.
     echo "/opt/swap/swapfile	none	swap	sw	0	0" >> /mnt/etc/fstab #Add swap to fstab, so it KEEPS working after installation.
 fi
-echo "--------------------------------------"
-echo "--   SYSTEM READY FOR 1-setup       --"
-echo "--------------------------------------"
+echo "-----------------------------------------------------"
+echo "--   Sonraki adım için sistem hazır: 1-setup       --"
+echo "-----------------------------------------------------"

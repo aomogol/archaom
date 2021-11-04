@@ -8,9 +8,9 @@
 #  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝   ╚═╝    ╚═════╝ ╚══════╝
 #-------------------------------------------------------------------------
 
-echo -e "\nFINAL SETUP AND CONFIGURATION"
+echo -e "\nSon kurulumlar ve düzenlemeler"
 echo "--------------------------------------"
-echo "-- GRUB Bootloader Installation     --"
+echo "-- GRUB Bootloader Kurulumu     --"
 echo "--------------------------------------"
 if [[ ! -d "/sys/firmware/efi" ]]; then
     grub-install --boot-directory=/boot ${DISK}
@@ -21,9 +21,9 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 # ------------------------------------------------------------------------
 
-echo -e "\nEnabling Login Display Manager"
+echo -e "\n Login Ekranı düzenlemesi"
 systemctl enable sddm.service
-echo -e "\nSetup SDDM Theme"
+echo -e "\nSDDM Theme"
 cat <<EOF > /etc/sddm.conf
 [Theme]
 Current=Nordic
@@ -31,7 +31,7 @@ EOF
 
 # ------------------------------------------------------------------------
 
-echo -e "\nEnabling essential services"
+echo -e "\nServislerin ayarlanması"
 
 systemctl enable cups.service
 ntpd -qg
@@ -42,7 +42,7 @@ systemctl enable NetworkManager.service
 systemctl enable bluetooth
 echo "
 ###############################################################################
-# Cleaning
+# Temizlik
 ###############################################################################
 "
 # Remove no password sudo rights
@@ -54,6 +54,6 @@ sed -i 's/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
 cd $pwd
 echo "
 ###############################################################################
-# Done - Please Eject Install Media and Reboot
+# Tamamlandı - Kurulum medyasını çıkartın ve sisteminizi yeniden başlatın
 ###############################################################################
 "

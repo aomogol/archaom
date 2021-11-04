@@ -8,7 +8,7 @@
 #  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝   ╚═╝    ╚═════╝ ╚══════╝
 #-------------------------------------------------------------------------
 
-echo -e "\nINSTALLING AUR SOFTWARE\n"
+echo -e "\nAUR paketleri yüklenecek\n"
 # You can solve users running this script as root with this and then doing the same for the next for statement. However I will leave this up to you.
 
 echo "CLONING: YAY"
@@ -23,15 +23,15 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/powerleve
 ln -s "$HOME/zsh/.zshrc" $HOME/.zshrc
 
 PKGS=(
-'autojump'
-'awesome-terminal-fonts'
+# 'autojump'
+# 'awesome-terminal-fonts'
 'brave-bin' # Brave Browser
-'dxvk-bin' # DXVK DirectX to Vulcan
-'github-desktop-bin' # Github Desktop sync
-'lightly-git'
-'lightlyshaders-git'
-'mangohud' # Gaming FPS Counter
-'mangohud-common'
+# 'dxvk-bin' # DXVK DirectX to Vulcan
+# 'github-desktop-bin' # Github Desktop sync
+# 'lightly-git'
+# 'lightlyshaders-git'
+# 'mangohud' # Gaming FPS Counter
+# 'mangohud-common'
 'nerd-fonts-fira-code'
 'nordic-darker-standard-buttons-theme'
 'nordic-darker-theme'
@@ -42,13 +42,13 @@ PKGS=(
 'plasma-pa'
 'ocs-url' # install packages from websites
 'sddm-nordic-theme-git'
-'snapper-gui-git'
+# 'snapper-gui-git'
 'ttf-droid'
 'ttf-hack'
 'ttf-meslo' # Nerdfont package
 'ttf-roboto'
-'zoom' # video conferences
-'snap-pac'
+# 'zoom' # video conferences
+# 'snap-pac'
 )
 
 for PKG in "${PKGS[@]}"; do
@@ -56,11 +56,11 @@ for PKG in "${PKGS[@]}"; do
 done
 
 export PATH=$PATH:~/.local/bin
-cp -r $HOME/ArchTitus/dotfiles/* $HOME/.config/
+cp -r $HOME/archaom/dotfiles/* $HOME/.config/
 pip install konsave
-konsave -i $HOME/ArchTitus/kde.knsv
+konsave -i $HOME/archaom/kde.knsv
 sleep 1
 konsave -a kde
 
-echo -e "\nDone!\n"
+echo -e "\nTamamlandı!\n"
 exit

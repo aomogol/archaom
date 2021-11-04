@@ -15,16 +15,16 @@ ISO dosyasını bir USB sürücüye Ventoy veya Etcher gibi bir tool ile aktarı
 ## Arch ISO ile boot 
 
 Boot işlemi ile gelen ilk prompt ekranında aşağıdaki komutları çalıştırın:
-(Türkçe klavye desteği için 
+Türkçe klavye desteği için komutunu çalıştırın.
 ```
-    loadkeys trq    
+loadkeys trq    
 ```
-komutunu çalıştırın)
+
 ```
 pacman -Sy git
 git clone https://github.com/aomogol/archaom
 cd archaom
-./archtitus.sh
+./archaom.sh
 ```
 
 ### Sistem İçeriği
