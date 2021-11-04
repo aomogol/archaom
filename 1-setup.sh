@@ -33,12 +33,17 @@ sed -i 's/^#tr_TR.UTF-8 UTF-8/tr_TR.UTF-8 UTF-8/' /etc/locale.gen
 sed -i 's/^#tr_TR ISO-8859-9/tr_TR ISO-8859-9/' /etc/locale.gen
 
 locale-gen
+echo "locale-gen işlemi tamamlandı."
 timedatectl --no-ask-password set-timezone Europe/Istanbul
+echo "Timezone ayarlandı."
 timedatectl --no-ask-password set-ntp 1
+echo "-------------------------------------------------------"
 localectl --no-ask-password set-locale LANG="tr_TR.UTF-8" LC_TIME="tr_TR.UTF-8"
-
+echo "locale.conf ayarlandı"
 # keymaps tanımı
 localectl --no-ask-password set-keymap trq
+echo "keymap ayarlandı"
+echo "-------------------------------------------------------"
 
 # Add sudo no password rights
 sed -i 's/^# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
