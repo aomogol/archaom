@@ -168,7 +168,7 @@ PKGS=(
 'python-psutil'
 'python-pyqt5'
 'python-pip'
-# 'qemu'
+'qemu'
 'rsync'
 'sddm'
 'sddm-kcm'
@@ -186,8 +186,8 @@ PKGS=(
 'unzip'
 'usbutils'
 'vim'
-# 'virt-manager'
-# 'virt-viewer'
+'virt-manager'
+'virt-viewer'
 'wget'
 'which'
 # 'wine-gecko'
@@ -241,7 +241,8 @@ echo "username=$username" >> ${HOME}/archaom/install.conf
 fi
 if [ $(whoami) = "root"  ];
 then
-    useradd -m -G wheel,libvirt -s /bin/bash $username 
+    #useradd -m -G wheel,libvirt -s /bin/bash $username 
+	useradd -m -G wheel -s /bin/bash $username 
 	passwd $username
 	cp -R /root/archaom /home/$username/
     chown -R $username: /home/$username/archaom
