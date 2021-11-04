@@ -16,8 +16,10 @@ ISO dosyasını bir USB sürücüye Ventoy veya Etcher gibi bir tool ile aktarı
 
 Boot işlemi ile gelen ilk prompt ekranında aşağıdaki komutları çalıştırın:
 (Türkçe klavye desteği için 
+```
     loadkeys trq    
-                            komutunu çalıştırın)
+```
+komutunu çalıştırın)
 ```
 pacman -Sy git
 git clone https://github.com/aomogol/archaom
@@ -25,26 +27,25 @@ cd archaom
 ./archtitus.sh
 ```
 
-### System Description
-This is completely automated arch install of the KDE desktop environment on arch using all the packages I use on a daily basis. 
+### Sistem İçeriği
 
-## Troubleshooting
+
+## Sorunlar ve Çözümler
 
 __[Arch Linux Installation Guide](https://github.com/rickellis/Arch-Linux-Install-Guide)__
 
-### No Wifi
+###  Wifi çalışmıyorsa
 
-#1: Run `iwctl`
+#1:`iwctl` komutuu çalıştırın.
 
-#2: Run `device list`, and find your device name.
+#2: `device list` komutunu çalıştırın , cihazınızın adını bulun.
 
-#3: Run `station [device name] scan`
+#3: `station [device name] scan` komutunu çalıştırın.
 
-#4: Run `station [device name] get-networks`
+#4: `station [device name] get-networks` komutunu çalıştırın.
 
-#5: Find your network, and run `station [device name] connect [network name]`, enter your password and run `exit`. You can test if you have internet connection by running `ping google.com`. 
+#5: Bağlanmak istediğiniz ağı bulun, `station [device name] connect [network name]` komutunu çalıştırın., şifrenizi girin ve `exit` ile çıkış yapın. İnternet bağlantısını test etmek için `ping google.com`komutunu çalıştırın.
 
 ## Credits
 
-- Original packages script was a post install cleanup script called ArchMatic located here: https://github.com/rickellis/ArchMatic
-- Thank you to all the folks that helped during the creation from YouTube Chat! Here are all those Livestreams showing the creation: <https://www.youtube.com/watch?v=IkMCtkDIhe8&list=PLc7fktTRMBowNaBTsDHlL6X3P3ViX3tYg>
+- Bu paketin orjinali Chris Titus tarafından hazırlanmıştır. https://github.com/christitustech/archtitus 
