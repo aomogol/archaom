@@ -34,8 +34,7 @@ sed -i 's/^#tr_TR ISO-8859-9/tr_TR ISO-8859-9/' /etc/locale.gen
 locale-gen
 timedatectl --no-ask-password set-timezone Europe/Istanbul
 timedatectl --no-ask-password set-ntp 1
-localectl --no-ask-password set-locale LANG="tr_TR.UTF-8" 
-#LC_TIME="tr_TR.UTF-8"
+localectl --no-ask-password set-locale LANG="tr_TR.UTF-8" LC_TIME="tr_TR.UTF-8"
 
 # keymaps tanımı
 localectl --no-ask-password set-keymap trq
@@ -236,7 +235,7 @@ fi
 echo -e "\nTamamlandı!\n"
 if ! source install.conf; then
 	read -p "Kullanıcı adı giriniz:" username
-echo "username=$username" >> ${HOME}/ArchTitus/install.conf
+echo "username=$username" >> ${HOME}/archaom/install.conf
 fi
 if [ $(whoami) = "root"  ];
 then
