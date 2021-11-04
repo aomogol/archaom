@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-(
+#(
 #-------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------
@@ -120,7 +120,7 @@ PKGS=(
 'kate'
 'kcodecs'
 'kcoreaddons'
-'kde-plasma-addons'
+'kdeplasma-addons'
 'kinfocenter'
 'kscreen'
 'kvantum-qt5'
@@ -252,4 +252,5 @@ else
 	echo "AUR paketlerinin yüklenmesi için sistem hazır"
 fi
 
-) 2>&1 | tee 1-setuplog.txt
+### log dosyası oluşması için
+#) 2>&1 | tee 1-setuplog.txt
