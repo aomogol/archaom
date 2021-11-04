@@ -12,16 +12,20 @@ pacman -S --noconfirm pacman-contrib
 # pacman -S --noconfirm terminus-font
 #setfont ter-v22b
 sed -i 's/^#Para/Para/' /etc/pacman.conf
-sed -i 's/^#Color/Color/' /etc/pacman.conf
+#sed -i 's/^#Color/Color/' /etc/pacman.conf
+
 pacman -S --noconfirm reflector rsync grub
-mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.yedek
+mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+
 echo -e "-------------------------------------------------------------------------"
 echo -e "-------------------------------------------------------------------------"
 echo -e "- $iso için en hızlı indirme noktalarının ayarlanması.                   "
 echo -e "-------------------------------------------------------------------------"
 echo -e "-------------------------------------------------------------------------"
-reflector -a 48 -c $iso -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
+#reflector -a 48 -c $iso -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
+reflector -a 48 -f 15 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 mkdir /mnt
+
 echo -e "-------------------------------------------------------------------------"
 echo -e "\n Gerekli paketlerin yüklenmesi...\n$HR"
 pacman -S --noconfirm gptfdisk btrfs-progs
@@ -118,3 +122,4 @@ fi
 echo "-----------------------------------------------------"
 echo "--   Sonraki adım için sistem hazır: 1-setup       --"
 echo "-----------------------------------------------------"
+) 2>&1 | tee installlog.txt
