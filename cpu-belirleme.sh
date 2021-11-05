@@ -10,7 +10,7 @@ proc_type=$(lscpu | awk '/Vendor ID:/ {print $3}')
 case "$proc_type" in
 	GenuineIntel)
 		echo "Intel microcode kuruluyor"
-		pacman -S --noconfirm --neede intel-ucode
+		pacman -S --noconfirm --needed intel-ucode
 		proc_ucode=intel-ucode.img
 		;;
 	AuthenticAMD)
@@ -21,4 +21,5 @@ case "$proc_type" in
 esac	
 
 
+echo "$proc_type"
 echo "$proc_ucode"
