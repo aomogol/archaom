@@ -256,17 +256,9 @@ if ! source install.conf; then
 	read -p "Kullanıcı adı giriniz:" username
 	echo "username=$username" >> ${HOME}/archaom/install.conf
 fi
-if [ $(whoami) = "root"  ];
-then
+if [ $(whoami) = "root"  ]; then
     #useradd -m -G wheel,libvirt -s /bin/bash $username 
-	if ! grep -q "^libvirt:" /etc/group; then
-		groupadd libvirt
-		echo "libvirt group oluşturuldu"
-	else
-		echo "Grup zaten var"
-	fi
-	
-	useradd -m -G wheel,libvirt -s /bin/bash $username 
+	useradd -m -G wheel -s /bin/bash $username 
 	passwd $username
 	cp -R /root/archaom /home/$username/
     chown -R $username: /home/$username/archaom
@@ -282,5 +274,12 @@ else
 	echo "AUR paketlerinin yüklenmesi için sistem hazır"
 fi
 
+if ! grep -q "^libvirt:" /etc/group; then
+		groupadd libvirt
+		gpasswd -a $username libvirt
+		echo "libvirt group oluşturuldu"
+	else
+		echo "Grup zaten var"
+	fi
 ### log dosyası oluşması için
 #) 2>&1 | tee 1-setuplog.txt
