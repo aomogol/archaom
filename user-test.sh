@@ -3,23 +3,27 @@
 #-------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------
-if ! source test.conf; then
+if ! source install.conf; then
+	echo " ############################################################"
+	echo " 				Kullanıcı adının belirlenmesi"
+	echo " ############################################################"
 	read -p "Kullanıcı adı giriniz:" username
-#echo "username=$username" >> ${HOME}/archaom/install.conf
-echo "username=$username" >> test.conf
+	echo "username=$username" >> ${HOME}/archaom/install.conf
 fi
-
 if [ $(whoami) = "root"  ];
 then
-    echo $whoami
-    echo "kullanıcı"
     #useradd -m -G wheel,libvirt -s /bin/bash $username 
-	#useradd -m -G wheel -s /bin/bash $username 
-	#passwd $username
-	#cp -R /root/archaom /home/$username/
-    #chown -R $username: /home/$username/archaom
+	useradd -m -G wheel -s /bin/bash $username 
+	passwd $username
+	cp -R /root/archaom /home/$username/
+    chown -R $username: /home/$username/archaom
+	echo " ############################################################"
+	echo " 				Makine adının belirlenmesi"
+	echo " ############################################################"
 	read -p "Makine adı giriniz:" nameofmachine
-	echo $nameofmachine > test.conf
+	echo $nameofmachine > /etc/hostname
+	echo "nameofmachine=$nameofmachine" >> ${HOME}/archaom/install.conf
+	echo " Girilen makine ismi = $nameofmachine"
 else
 	echo "AUR paketlerinin yüklenmesi için sistem hazır"
 fi

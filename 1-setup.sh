@@ -248,10 +248,13 @@ elif lspci | grep -E "Integrated Graphics Controller"; then
     pacman -S libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils --needed --noconfirm
 fi
 
-echo -e "\nTamamlandı!\n"
+echo -e "\n Setup Tamamlandı!\n"
 if ! source install.conf; then
+	echo " ############################################################"
+	echo " 				Kullanıcı adının belirlenmesi"
+	echo " ############################################################"
 	read -p "Kullanıcı adı giriniz:" username
-echo "username=$username" >> ${HOME}/archaom/install.conf
+	echo "username=$username" >> ${HOME}/archaom/install.conf
 fi
 if [ $(whoami) = "root"  ];
 then
@@ -260,8 +263,13 @@ then
 	passwd $username
 	cp -R /root/archaom /home/$username/
     chown -R $username: /home/$username/archaom
+	echo " ############################################################"
+	echo " 				Makine adının belirlenmesi"
+	echo " ############################################################"
 	read -p "Makine adı giriniz:" nameofmachine
 	echo $nameofmachine > /etc/hostname
+	echo "nameofmachine=$nameofmachine" >> ${HOME}/archaom/install.conf
+	echo " Girilen makine ismi = $nameofmachine"
 else
 	echo "AUR paketlerinin yüklenmesi için sistem hazır"
 fi
