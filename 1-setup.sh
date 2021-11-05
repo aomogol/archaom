@@ -34,25 +34,34 @@ sed -i 's/^#tr_TR ISO-8859-9/tr_TR ISO-8859-9/' /etc/locale.gen
 
 locale-gen
 echo "locale-gen işlemi tamamlandı."
-timedatectl --no-ask-password set-timezone Europe/Istanbul
-echo "Timezone ayarlandı."
-timedatectl --no-ask-password set-ntp 1
 echo "-------------------------------------------------------"
-localectl --no-ask-password set-locale LANG="tr_TR.UTF-8" LC_TIME="tr_TR.UTF-8"
+timedatectl --no-ask-password set-timezone Europe/Istanbul
+# timezone ayarları için başka bir komut
+# ln -sf /usr/share/zoneinfo/Europe/Istanbul /etc/localtime
+timedatectl --no-ask-password set-ntp 1
+echo "Timezone ayarlandı."
+echo "-------------------------------------------------------"
+localectl --no-ask-password set-locale LANG="tr_TR.UTF-8" 
+# ihtiyaç olacak mı bakılacak?? LC_TIME="tr_TR.UTF-8"
+# locale.conf ayarları için başka bir komut
+# echo "LANG=tr_TR.UTF-8" >> /etc/locale.conf
 echo "locale.conf ayarlandı"
+echo "-------------------------------------------------------"
 # keymaps tanımı
 localectl --no-ask-password set-keymap trq
+# vonsole.conf ayarları için başka bir komut
+# echo "KEYMAP=trq" >> /etc/vconsole.conf
 echo "keymap ayarlandı"
 echo "-------------------------------------------------------"
 
-# Add sudo no password rights
+# sudo için şifre istemeden devam etmesi için
 sed -i 's/^# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
 
 # parallel download ve renkler
 sed -i 's/^#Para/Para/' /etc/pacman.conf
 sed -i 's/^#Color/Color/' /etc/pacman.conf
 
-#Enable multilib
+# multilib aktif etmek için
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Sy --noconfirm
 
@@ -71,12 +80,12 @@ PKGS=(
 'alsa-plugins' # audio plugins
 'alsa-utils' # audio utils
 'ark' # compression
-'audiocd-kio' 
+'audiocd-kio'  #Kioslave for accessing audio CDs
 'autoconf' # build
 'automake' # build
-'base'
-'bash-completion'
-'bind'
+'base' #Minimal package set to define a basic Arch Linux installation
+'bash-completion' #Programmable completion for the bash shell
+'bind' #A complete, highly portable implementation of the DNS protocol
 'binutils'
 'bison'
 'bluedevil'
@@ -96,17 +105,17 @@ PKGS=(
 'discover'
 'dolphin'
 'dosfstools'
-'dtc'
+'dtc' # Device Tree Compiler
 'efibootmgr' # EFI boot
 'egl-wayland'
 'exfat-utils'
 'extra-cmake-modules'
-'filelight'
-'flex'
+'filelight' #View disk usage information
+'flex' #A tool for generating text-scanning programs
 'fuse2'
 'fuse3'
 'fuseiso'
-# 'gamemode'
+# 'gamemode' #A daemon/lib combo that allows games to request a set of optimisations be temporarily applied to the host OS
 'gcc'
 # 'gimp' # Photo editing
 'git'
@@ -219,12 +228,12 @@ proc_type=$(lscpu | awk '/Vendor ID:/ {print $3}')
 case "$proc_type" in
 	GenuineIntel)
 		print "Intel microcode kuruluyor"
-		pacman -S --noconfirm intel-ucode
+		pacman -S --noconfirm --neede intel-ucode
 		proc_ucode=intel-ucode.img
 		;;
 	AuthenticAMD)
 		print "AMD microcode kuruluyor"
-		pacman -S --noconfirm amd-ucode
+		pacman -S --noconfirm --needed amd-ucode
 		proc_ucode=amd-ucode.img
 		;;
 esac	
