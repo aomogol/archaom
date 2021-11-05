@@ -8,7 +8,7 @@ if ! source install.conf; then
 #echo "username=$username" >> ${HOME}/archaom/install.conf
 echo "username=$username" >> test.conf
 fi
-fi
+
 if [ $(whoami) = "root"  ];
 then
     echo $whoami
