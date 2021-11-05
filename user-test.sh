@@ -3,12 +3,15 @@
 #-------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------
-if ! source test.conf; then
+#if ! source test.conf; then
+if ! grep -q "^username=" test.conf; then
 	echo " ############################################################"
 	echo " 	Kullanıcı adının belirlenmesi"
 	echo " ############################################################"
 	read -p "Kullanıcı adı giriniz:" username
 	echo "username=$username" >> test.conf
+    else
+    echo " username var"
 fi
 if [ ! $(whoami) = "root"  ];
 then
