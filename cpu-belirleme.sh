@@ -19,3 +19,6 @@ case "$proc_type" in
 		proc_ucode=amd-ucode.img
 		;;
 esac	
+
+
+echo "$proc_ucode"
