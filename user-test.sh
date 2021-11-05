@@ -3,7 +3,7 @@
 #-------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------
-if ! source install.conf; then
+if ! source test.conf; then
 	read -p "Kullanıcı adı giriniz:" username
 #echo "username=$username" >> ${HOME}/archaom/install.conf
 echo "username=$username" >> test.conf
