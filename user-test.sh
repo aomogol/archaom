@@ -20,7 +20,7 @@ then
 	#passwd $username
 	#cp -R /root/archaom /home/$username/
     #chown -R $username: /home/$username/archaom
-    if  grep -q "^nameofmachine=" test.conf; then
+    if  ! grep -q "^nameofmachine=" test.conf; then
 
 	echo " ############################################################"
 	echo " 	Makine adının belirlenmesi"
