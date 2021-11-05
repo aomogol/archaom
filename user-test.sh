@@ -5,7 +5,7 @@
 #-------------------------------------------------------------------------
 if ! source test.conf; then
 	echo " ############################################################"
-	echo " 				Kullanıcı adının belirlenmesi"
+	echo " 	Kullanıcı adının belirlenmesi"
 	echo " ############################################################"
 	read -p "Kullanıcı adı giriniz:" username
 	echo "username=$username" >> test.conf
@@ -18,7 +18,7 @@ then
 	#cp -R /root/archaom /home/$username/
     #chown -R $username: /home/$username/archaom
 	echo " ############################################################"
-	echo " 				Makine adının belirlenmesi"
+	echo " 	Makine adının belirlenmesi"
 	echo " ############################################################"
 	read -p "Makine adı giriniz:" nameofmachine
 	#echo $nameofmachine > /etc/hostname
@@ -27,3 +27,10 @@ then
 else
 	echo "AUR paketlerinin yüklenmesi için sistem hazır"
 fi
+
+if ! grep -q "^libvirt:" /etc/group; then
+		groupadd libvirt
+		echo "libvirt group oluşturuldu"
+	else
+		echo "Grup zaten var"
+	fi
